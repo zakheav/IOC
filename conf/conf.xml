@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<recipe>
+	<objects>
+		<object id="hello" class="test.Hello">
+			<property name="person">
+				<ref id="person1"></ref>
+			</property>
+		</object>
+		
+		<object id="person1" class="test.Person">
+			<property name="myTelephone">
+				<ref id="telephone"></ref>
+			</property>
+			<property name="name">
+				<value type="java.lang.String">weiyuan</value>
+			</property>
+		</object>
+		
+		<object id="person2" class="test.Person">
+			<property name="myTelephone">
+				<ref id="telephone"></ref>
+			</property>
+			<property name="name">
+				<value type="java.lang.String">lixin</value>
+			</property>
+		</object>
+		
+		<object id="telephone" class="test.Telephone">
+			<property name="contact">
+				<ref id="person2"></ref>
+			</property>
+		</object>
+	</objects>
+</recipe>
