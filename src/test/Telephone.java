@@ -1,7 +1,7 @@
 package test;
 
 public class Telephone {
-	private Person contact;
+	public Person contact;
 
 	public void set_contact(Person c) {
 		contact = c;

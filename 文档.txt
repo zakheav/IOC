@@ -1,0 +1,54 @@
+配置文件按照下面的例子写：singleton属性可以不写，默认为true
+<recipe>
+	<objects>
+		<object id="hello" class="test.Hello" singleton="true">
+			<property name="person">
+				<ref id="person1"></ref>
+			</property>
+		</object>
+		
+		<object id="person1" class="test.Person" singleton="true">
+			<property name="myTelephone">
+				<ref id="telephone"></ref>
+			</property>
+			<property name="name">
+				<value type="java.lang.String">weiyuan</value>
+			</property>
+		</object>
+		
+		<object id="person2" class="test.Person" singleton="true">
+			<property name="myTelephone">
+				<ref id="telephone"></ref>
+			</property>
+			<property name="name">
+				<value type="java.lang.String">hahahah</value>
+			</property>
+		</object>
+		
+		<object id="telephone" class="test.Telephone" singleton="true">
+			<property name="contact">
+				<ref id="person2"></ref>
+			</property>
+		</object>
+	</objects>
+</recipe>
+
+每个对象中的属性需要对应set函数，函数名为：set_属性名()
+
+程序思路是：
+在内存中维护一个对象依赖图的邻接表Map<String, ObjectGraphNode>，key是配置文件中每个object的id属性
+ObjectGraphNode {
+	String className // 类名字，来自配置文件中每个object的class属性
+	Map<String, Object> propertyValue // 非引用属性名称-值
+	Map<String, String> propertyType // 非引用属性名称-类型
+	Map<String, String> ref // key是对象中引用对象属性的name，value是引用的对象的id
+	Boolean singleton = true;// 是否是单例模式
+	Object instance = null;// 单例对象缓存
+}
+
+IOC启动时候会生成对象的依赖图，并且对图进行检查，如果发现图结构有问题或者单例对象的引用不是单例模式，则会报错
+使用IOC的getObject("对象id")获取对象的实例，这个函数调用会让IOC搜索对象依赖图，初始化对象实例。过程如下：
+1	使用BFS搜索依赖图，得到和要实例化的对象关联的所有对象的子图
+2	使用反射调用构造函数初始化子图中的对象（如果是单例模式且单例对象缓存中已经有对象，则不重新初始化），并按照配置文件中的非引用属性配置项为非引用属性赋值
+3	根据子图中对象的依赖关系将上面初始化后的对象相互组装
+4	返回要获取的实例对象

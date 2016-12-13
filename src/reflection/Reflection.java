@@ -2,10 +2,9 @@ package reflection;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
-import test.Hello;
 
 public class Reflection {
-	public Object getObject_default(String className) {// 根据类名获取对象(调用默认构造函数)
+	private Object get_objectDefault(String className) {// 根据类名获取对象(调用默认构造函数)
 		try {
 			Class<?> classObject = Class.forName(className);// 获得指定类的Class对象
 			Object object = classObject.newInstance();// 调用默认构造函数
@@ -16,13 +15,13 @@ public class Reflection {
 		}
 	}
 
-	public Object getObject(String className) {// 根据类名获取对象(调用自定义构造函数)
+	public Object get_object(String className) {// 根据类名获取对象(调用自定义构造函数)
 		try {
 			Class<?> ClassObject = Class.forName(className);// 获得指定类的Class对象
 			// 获得这个Class对象中的自定义构造函数
 			Constructor<?>[] cstrcts = ClassObject.getDeclaredConstructors();
 			if (cstrcts.length == 0) {// 不存在自定义的构造函数
-				return getObject_default(className);// 调用默认构造函数
+				return get_objectDefault(className);// 调用默认构造函数
 			} else {
 				Class<?> paramsClass[] = cstrcts[0].getParameterTypes();
 				Object params[] = new Object[paramsClass.length];
@@ -66,14 +65,5 @@ public class Reflection {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-	}
-
-	public static void main(String[] args) {
-		Reflection r = new Reflection();
-		Object p = r.getObject("test.Person");
-		r.set(p, "name", "weiyuan", "java.lang.String");
-		Hello h = (Hello) r.getObject("test.Hello");
-		r.set(h, "person", p, "test.Person");
-		h.sayHello();
 	}
 }

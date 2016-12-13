@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <recipe>
 	<objects>
-		<object id="hello" class="test.Hello">
+		<object id="hello" class="test.Hello" singleton="false">
 			<property name="person">
 				<ref id="person1"></ref>
 			</property>
 		</object>
 		
-		<object id="person1" class="test.Person">
+		<object id="person1" class="test.Person" singleton="true">
 			<property name="myTelephone">
 				<ref id="telephone"></ref>
 			</property>
@@ -16,16 +16,16 @@
 			</property>
 		</object>
 		
-		<object id="person2" class="test.Person">
+		<object id="person2" class="test.Person" singleton="true">
 			<property name="myTelephone">
 				<ref id="telephone"></ref>
 			</property>
 			<property name="name">
-				<value type="java.lang.String">lixin</value>
+				<value type="java.lang.String">hahahah</value>
 			</property>
 		</object>
 		
-		<object id="telephone" class="test.Telephone">
+		<object id="telephone" class="test.Telephone" singleton="true">
 			<property name="contact">
 				<ref id="person2"></ref>
 			</property>

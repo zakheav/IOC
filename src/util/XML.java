@@ -10,7 +10,7 @@ import org.dom4j.io.SAXReader;
 import ioc.ObjectGraphNode;
 
 public class XML {
-	public Map<String, ObjectGraphNode> getObjectGraph() {// 从xml文件中得到对象之间的依赖关系
+	public Map<String, ObjectGraphNode> get_objectGraph() {// 从xml文件中得到对象之间的依赖关系
 		Map<String, ObjectGraphNode> refGraph = new HashMap<String, ObjectGraphNode>();// 依赖图邻接表
 		SAXReader reader = new SAXReader();
 		try {
