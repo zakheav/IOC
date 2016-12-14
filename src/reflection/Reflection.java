@@ -1,6 +1,7 @@
 package reflection;
 
 import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 public class Reflection {
@@ -52,18 +53,30 @@ public class Reflection {
 	public void set(Object object, String propertyName, Object propertyValue, String propertyType) {
 		Class<?> ClassObject = object.getClass();
 		Class<?> paramClass = null;
+		Method setMethod = null;
 		try {
 			paramClass = Class.forName(propertyType);
+			String methodName = "set_" + propertyName;
+			boolean finish = false;
+			while (!finish && paramClass != null) {// 这个循环保证可以找到可以用的setter函数
+				try {
+					setMethod = ClassObject.getMethod(methodName, paramClass);// 获得设定指定property的set函数
+					finish = true;
+				} catch (NoSuchMethodException e) {
+					paramClass = paramClass.getSuperclass();
+				}
+			}
+			if (paramClass != null) {
+				try {
+					setMethod.invoke(object, propertyValue);
+				} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+					e.printStackTrace();
+				} // 调用set函数，为指定的对象object的某个propertyName的属性赋值
+			} else {
+				System.out.println("no such method!");
+			}
 		} catch (ClassNotFoundException e1) {
 			e1.printStackTrace();
-		}
-			
-		String methodName = "set_" + propertyName;
-		try {
-			Method setMethod = ClassObject.getMethod(methodName, paramClass);// 获得设定指定property的set函数
-			setMethod.invoke(object, propertyValue);// 调用set函数，为指定的对象object的某个propertyName的属性赋值
-		} catch (Exception e) {
-			e.printStackTrace();
 		}
 	}
 }
