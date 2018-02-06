@@ -14,7 +14,7 @@ public class XML {
 		Map<String, ObjectGraphNode> refGraph = new HashMap<String, ObjectGraphNode>();// 依赖图邻接表
 		SAXReader reader = new SAXReader();
 		try {
-			Document document = reader.read(new File("conf/conf.xml"));
+			Document document = reader.read(new File("resources/conf.xml"));
 			Element root = document.getRootElement();
 			Element objects = root.element("objects");
 			@SuppressWarnings("unchecked")
